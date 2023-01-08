@@ -5,10 +5,10 @@ import {
   ApolloFederationDriverConfig,
 } from '@nestjs/apollo';
 
-import { Todo, TodoModule } from 'src/todo';
+import { join } from 'path';
 
+import { User, UserModule } from 'src/user';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/todo/types/todo-user.type';
 
 @Module({
   imports: [
@@ -17,20 +17,16 @@ import { User } from 'src/todo/types/todo-user.type';
       url: 'mongodb://localhost/todos',
       synchronize: true,
       useUnifiedTopology: true,
-      entities: [Todo],
+      entities: [User],
     }),
     GraphQLModule.forRoot<ApolloFederationDriverConfig>({
-      driver: ApolloFederationDriver,
       //autoSchemaFile: true,
       autoSchemaFile: {
         federation: 2,
       },
-      buildSchemaOptions: {
-        orphanedTypes: [User],
-      },
+      driver: ApolloFederationDriver,
     }),
-
-    TodoModule,
+    UserModule,
   ],
 })
 export class AppModule {}

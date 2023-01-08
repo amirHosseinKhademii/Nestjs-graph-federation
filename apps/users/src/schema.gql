@@ -39,36 +39,9 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Todo implements Node {
-  id: ID!
-  title: String!
-  description: String
-  isCompleted: Boolean
-  created_at: DateTime
-  updated_at: DateTime
-  user: User!
-}
-
-type TodoConnection {
-  edges: [TodoEdge!]
-  pageInfo: TodoPageInfo
-}
-
-type TodoEdge {
-  cursor: String
-  node: Todo
-}
-
-type TodoPageInfo {
-  startCursor: String
-  endCursor: String
-  hasPreviousPage: Boolean!
-  hasNextPage: Boolean!
-}
-
 type Query {
-  todos(before: String, after: String, first: Float, last: Float, query: String): TodoConnection!
-  todo(id: ID!): Todo!
+  users: [User!]!
+  user(userId: String!): User!
 }
 
 scalar link__Import

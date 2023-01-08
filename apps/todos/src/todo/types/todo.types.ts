@@ -1,7 +1,7 @@
-import { Field, ID, ObjectType } from '@nestjs/graphql';
-import { CardConnection } from 'src/card';
+import { Directive, Field, ID, ObjectType } from '@nestjs/graphql';
+//import { CardConnection } from 'src/card';
 import { NodeInterface, NodeType, CreateConnectionType } from 'src/relay';
-import { User } from 'src/user';
+
 import {
   Column,
   CreateDateColumn,
@@ -10,9 +10,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from './todo-user.type';
 
 @NodeType('Todo')
 @Entity()
+@Directive('@key(fields: "id")')
 export class Todo implements NodeInterface {
   @ObjectIdColumn({ update: false })
   _id: string;
@@ -40,10 +42,6 @@ export class Todo implements NodeInterface {
   @Field({ nullable: true })
   @UpdateDateColumn()
   updated_at: Date;
-
-  @Column({ default: [] })
-  @Field(() => CardConnection)
-  cards: string[];
 
   @Column()
   @Field(() => User)
