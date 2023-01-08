@@ -1,0 +1,143 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+interface Node {
+  id: ID!
+}
+
+type Card implements Node {
+  id: ID!
+  title: String!
+  description: String
+}
+
+type CardConnection {
+  edges: [CardEdge!]
+  pageInfo: CardPageInfo
+}
+
+type CardEdge {
+  cursor: String
+  node: Card
+}
+
+type CardPageInfo {
+  startCursor: String
+  endCursor: String
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+type User implements Node {
+  id: ID!
+  userName: String!
+  fullName: String!
+  created_at: DateTime
+  updated_at: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type AddCardPayload {
+  card: Card!
+  clientMutationId: String
+}
+
+type UpdateCardPayload {
+  card: Card!
+  clientMutationId: String
+}
+
+type Todo implements Node {
+  id: ID!
+  title: String!
+  description: String
+  isCompleted: Boolean
+  created_at: DateTime
+  updated_at: DateTime
+  cards(before: String, after: String, first: Float, last: Float, query: String): CardConnection!
+  user: User!
+}
+
+type TodoConnection {
+  edges: [TodoEdge!]
+  pageInfo: TodoPageInfo
+}
+
+type TodoEdge {
+  cursor: String
+  node: Todo
+}
+
+type TodoPageInfo {
+  startCursor: String
+  endCursor: String
+  hasPreviousPage: Boolean!
+  hasNextPage: Boolean!
+}
+
+type AddTodoPayload {
+  todo: Todo!
+  clientMutationId: String
+}
+
+type UpdateTodoPayload {
+  todo: Todo!
+  clientMutationId: String
+}
+
+type Query {
+  node(id: ID!): Node
+  users: [User!]!
+  user(userId: String!): User!
+  todos(before: String, after: String, first: Float, last: Float, query: String): TodoConnection!
+  todo(id: ID!): Todo!
+  cards(before: String, after: String, first: Float, last: Float, query: String): CardConnection!
+}
+
+type Mutation {
+  signUp(userName: String!, fullName: String!, password: String!): String!
+  signIn(userName: String!, password: String!): String!
+  addTodo(input: AddTodoInput!): AddTodoPayload
+  updateTodo(input: UpdateTodoInput!): UpdateTodoPayload
+  addCard(input: AddCardInput!): AddCardPayload
+  updateCard(input: UpdateCardInput!): UpdateCardPayload
+}
+
+input AddTodoInput {
+  title: String!
+  description: String = ""
+  clientMutationId: String
+}
+
+input UpdateTodoInput {
+  id: ID!
+  title: String
+  description: String
+  isCompleted: Boolean
+  clientMutationId: String
+}
+
+input AddCardInput {
+  todoId: ID!
+  title: String!
+  description: String = ""
+  clientMutationId: String
+}
+
+input UpdateCardInput {
+  id: ID!
+  title: String
+  description: String
+  clientMutationId: String
+}
+
+type Subscription {
+  todoUpdated: Todo!
+  cardAdded: Card!
+  cardUpdated: Card!
+}
